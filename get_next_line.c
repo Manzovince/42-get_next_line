@@ -6,13 +6,22 @@
 /*   By: vmanzoni <vmanzoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 12:18:10 by vmanzoni          #+#    #+#             */
-/*   Updated: 2019/04/03 22:56:09 by vmanzoni         ###   ########.fr       */
+/*   Updated: 2019/04/07 19:08:41 by vmanzoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static t_list	*ft_browse_list(t_list **start, int fd)
+char	*ft_concat_free(const char *s1, const char *s2, size_t len)
+{
+	char	*s;
+
+	s = ft_strnjoin(s1, s2, len);
+	free((char *)s1);
+	return (s);
+}
+
+static t_list	*ft_stock_line(t_list **start, int fd)
 {
 	t_list	*tmp;
 
@@ -39,9 +48,9 @@ int				get_next_line(const int fd, char **line)
 	if (fd < 0 || !line || read(fd, buf, 0) < 0)
 		return (-1);
 	start = p;
-	p = ft_browse_list(&start, fd);
+	p = ft_stock_line(&start, fd);
 	while (!ft_strchr(p->content, '\n') && (rv = read(fd, buf, BUFF_SIZE)))
-		p->content = ft_strnjoin_free(p->content, buf, rv, '1');
+		p->content = ft_concat_free(p->content, buf, rv);
 	rv = 0;
 	while (((char*)p->content)[rv] && ((char*)p->content)[rv] != '\n')
 		++rv;
