@@ -6,7 +6,7 @@
 /*   By: vmanzoni <vmanzoni@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 12:18:10 by vmanzoni          #+#    #+#             */
-/*   Updated: 2019/04/07 19:08:41 by vmanzoni         ###   ########.fr       */
+/*   Updated: 2019/04/07 19:10:13 by vmanzoni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_concat_free(const char *s1, const char *s2, size_t len)
 	return (s);
 }
 
-static t_list	*ft_stock_line(t_list **start, int fd)
+static t_list	*ft_stock_lines(t_list **start, int fd)
 {
 	t_list	*tmp;
 
@@ -48,7 +48,7 @@ int				get_next_line(const int fd, char **line)
 	if (fd < 0 || !line || read(fd, buf, 0) < 0)
 		return (-1);
 	start = p;
-	p = ft_stock_line(&start, fd);
+	p = ft_stock_lines(&start, fd);
 	while (!ft_strchr(p->content, '\n') && (rv = read(fd, buf, BUFF_SIZE)))
 		p->content = ft_concat_free(p->content, buf, rv);
 	rv = 0;
